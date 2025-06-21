@@ -1,0 +1,47 @@
+model Case {
+  caseid                     Int      @id @default(autoincrement())
+  judgeid                    Int?     @db.Int()
+  courtid                    Int      @db.Int()
+  clientid                   Int      @db.Int()
+  statusid                   Int      @db.Int()
+  advocateid                 Int?      @db.Int()
+  lawfirmid                  Int?      @db.Int()
+  appearingforid             Int?      @db.Int()
+  partyid                    Int?      @db.Int()
+  case_no                    String   @unique @db.VarChar(50)
+  case_title                 String   @unique @db.VarChar(255)
+  advocate_law_firm          String   @db.VarChar(255)
+  advocate_law_firm_id       String   @db.VarChar(25)
+  prev_advocate_law_firm     String?  @db.VarChar(255)
+  prev_advocate_law_firm_id  String?  @db.VarChar(255)
+  case_notes                 String   @db.LongText
+  last_judge                 String?  @db.VarChar(255)
+  opposing_advocate_law_firm String?  @db.VarChar(255)
+  opposing_advocate_law_firm_id  String?   @db.VarChar(255)
+  ref_advocate               String?   @db.VarChar(255)
+  other_info                 String?   @db.LongText
+  next_hearing_date          DateTime? @db.Date()
+  next_hearing_at            String?   @db.VarChar(255)
+  updatedon                  DateTime? @default(now())
+  createdAt                  DateTime  @default(now())
+  count                      Int       @default(1)                      
+  companyid                  Int?      @db.Int()
+  status_updatedon           DateTime? @db.DateTime()
+  status_updatedby           Int?       @db.Int()
+  status_remarks             String    @db.VarChar(200)
+  
+  // Foreign Key Relations
+  Party            Party?          @relation(fields: [partyid], references: [partyid])
+  Appearingfor     Appearingfor?   @relation(fields: [appearingforid], references: [id])
+  Advocate         Advocate?     @relation(fields: [advocateid], references: [advocateid])
+  LawFirm          LawFirm?        @relation(fields: [lawfirmid], references: [lawfirmid])
+  Judge            Judge?          @relation(fields: [judgeid], references: [judgeid])
+  Casestatus       CASESTATUS     @relation(fields: [statusid], references: [id])
+  Court            Court          @relation(fields: [courtid], references: [id])
+  Client           Client         @relation(fields: [clientid], references: [clientid])
+  
+  @@map("case_m")
+  CaseOrder CaseOrder[]
+  CaseDate CaseDate[]
+}
+
